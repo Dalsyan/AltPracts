@@ -19,6 +19,10 @@ def levenshtein_matriz(x, y, threshold=None):
 
 def levenshtein_edicion(x, y, threshold=None):
     # a partir de la versión levenshtein_matriz
+    res = {}
+    dist = levenshtein_matriz(x, y, threshold=None)
+    lenX, lenY = len(x), len(y)
+    
     return 0,[] # COMPLETAR Y REEMPLAZAR ESTA PARTE
 
 def levenshtein_reduccion(x, y, threshold=None):
@@ -56,7 +60,7 @@ def damerau_intermediate_edicion(x, y, threshold=None):
     # secuencia de operaciones de edición
     # completar versión Damerau-Levenstein intermedia con matriz
     return 0,[] # COMPLETAR Y REEMPLAZAR ESTA PARTE
-    
+
 def damerau_intermediate(x, y, threshold=None):
     # versión con reducción coste espacial y parada por threshold
     return min(0,threshold+1) # COMPLETAR Y REEMPLAZAR ESTA PARTE
@@ -77,4 +81,3 @@ opcionesEdicion = {
     'damerau_r':   damerau_restricted_edicion,
     'damerau_i':   damerau_intermediate_edicion
 }
-
