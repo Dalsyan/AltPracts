@@ -162,7 +162,7 @@ class SAR_Project:
         ## COMPLETAR PARA FUNCIONALIDADES EXTRA ##
         ##########################################
 
-        
+
 
     def index_file(self, filename):
         """
@@ -181,10 +181,10 @@ class SAR_Project:
         """
 
         with open(filename) as fh:
-            
+
             i = 0 #Contador para los articulos dentro del fichero
             #fname = filename.split("\\")[2][:-5] #Split para sacar el nombre base
-     
+
             jlist = json.load(fh)
             d = len(self.docs) #DocId
             self.docs[d] = filename
@@ -194,7 +194,7 @@ class SAR_Project:
                     n = len(self.news) #NewId
 
                     self.news[n] = f"{d}_{i}" #Asignar al newId su nombre junto con la posición relativa
-      
+
                     words = self.tokenize(new["article"])
                     j = 0
                     for w in words:
@@ -213,7 +213,7 @@ class SAR_Project:
                     i = i + 1
             else:
                 for new in jlist:
-                    
+
                     n = len(self.news) #NewId
                     self.news[n] = f"{d}_{i}" #Asignar al newId su nombre junto con la posición relativa
                     words = self.tokenize(new["article"])
@@ -576,7 +576,7 @@ class SAR_Project:
                         if d not in res:
                             res.append(d)
                             break
-                        else: 
+                        else:
                             break
                     elif n+1 in posis[start]:
                         start += 1
@@ -653,7 +653,7 @@ class SAR_Project:
                     w=self.ptindex[permuterms]
                     if(w not in res):
                         resprov.append(w)
-            
+
             for w in resprov:
                 lista=self.get_posting(w)
                 res=self.or_posting(res,lista)
@@ -883,10 +883,10 @@ class SAR_Project:
         return: el numero de noticias recuperadas, para la opcion -T
 
         """
-        
+
         result = self.solve_query(query)
-        
-            
+
+
         print(f"Noticias recuperadas: {len(result)}")
         for n in result:
             d = self.news[n]
@@ -897,7 +897,7 @@ class SAR_Project:
                 fecha = docJson[int(lis[1])]["date"]
                 titulo = docJson[int(lis[1])]["title"]
                 keywords = docJson[int(lis[1])]["keywords"]
-                score = 0             
+                score = 0
                 print(f"Noticia: {n}")
                 print(f"    Fecha: {fecha}")
                 print(f"    Título: {titulo}")
@@ -905,7 +905,7 @@ class SAR_Project:
                 print(f"    Score: {score}")
                 if self.show_snippet:
                     texto = docJson[int(lis[1])]["article"]
-                    arrwords = self.tokenize(texto) 
+                    arrwords = self.tokenize(texto)
                     consulta = query.lower()
                     #separamos los parentesis
                     split = ""
@@ -920,11 +920,11 @@ class SAR_Project:
                             if item == " " and open:
                                 split = split + "|"
                             else: split = split + item
-                            
-                    
+
+
 
                     #separamos los diferentes items de la query
-                    consulta = split.split(" ")  
+                    consulta = split.split(" ")
                     palabras = []
                     for i in range(len(consulta)):
                         if consulta[i] == "not":
@@ -941,7 +941,7 @@ class SAR_Project:
                             terminos=self.sindex[self.stemmer.stem(p)]
                             for t in terminos:
                                 abuscar.append(t)
-                    
+
                     else:
                         for p in palabras:
                             if("*" in p or "?" in p):
@@ -963,7 +963,7 @@ class SAR_Project:
                                 abuscar.append(words)
                             else:
                                 abuscar.append(p)
-                                 
+
                     if len(abuscar) > 1:
                         for w in arrwords:
                             if w in abuscar:
@@ -973,20 +973,20 @@ class SAR_Project:
                             else:
                                 if encontradas > 0 and encontradas != len(abuscar):
                                     snippet = snippet + " " + w
-                                    
+
                     if len(abuscar) == 1 or len(snippet.split(" ")) < 10 or len(snippet.split(" ")) > 250:
-                        
+
                         puntos = texto.lower().split(".")
                         for f in puntos:
                             for i in abuscar:
                                 if i in f:
                                     snippet = f
-                    
+
                     print(f"    Snippet: {snippet}")
                     print("---------------------------------------------------------------------------------")
-                    
-                            
-                            
+
+
+
 
     def rank_result(self, result, query):
         """
@@ -1057,6 +1057,15 @@ class SAR_Project:
         return res
 >>>>>>> Stashed changes
 
+def set_spelling(self, use_spelling, distance, threshold):
+    """
+    self.use_spelling a True se activa la corrección ortográfica
+    EN LAS PALABRAS NO ENCONTRADAS, en caso contrario NO utilizará
+    corrección ortográfica
+    """
+    self.use_spelling = use_spelling
+    self.distance = distance
+    self.threshold = threshold
         ###################################################
         ## COMPLETAR PARA FUNCIONALIDAD EXTRA DE RANKING ##
         ###################################################
