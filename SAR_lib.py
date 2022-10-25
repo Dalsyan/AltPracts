@@ -1,5 +1,6 @@
 import json
 from nltk.stem.snowball import SnowballStemmer
+from spellsuggester.py import SpellSuggester
 import os
 import re
 import math
@@ -54,6 +55,10 @@ class SAR_Project:
         self.use_stemming = False # valor por defecto, se cambia con self.set_stemming()
         self.use_ranking = False  # valor por defecto, se cambia con self.set_ranking()
         self.pterms = {} # hash para el indice invertido permuterm --> clave: permuterm, valor: lista con los terminos que tienen ese permuterm
+        self.use_spelling = False
+        self.distance = None
+        self.threshold = None
+        self.speller = new SpellSuggester()
 
 
     ###############################
@@ -997,65 +1002,7 @@ class SAR_Project:
         return: la lista de resultados ordenada
         """
 
-<<<<<<< Updated upstream
         pass
-=======
-            #si es permuterm
-            if("*" in term or "?" in term):
-                #permuterms relacionados
-                pterms=self.get_pterms(term,field)
-
-                #términos
-                for elem in pterms:
-                   terminos=self.pterms[elem]
-                   for termino in terminos:
-                       terms[(termino,field)]=True
-
-            #con stemming
-            if self.use_stemming:
-                #términos asociados al stem
-                terminos=self.sterms[self.stemmer.stem(term)]
-                for termino in terminos:
-                    terms[(termino,field)]=True
-
-            #en el resto de los casos
-            else:
-                terms[(term,field)]=True
-
-        pesado=0
-
-        #para cada documento
-        for doc in result:
-            peso_doc=0
-
-            #para cada término y campo
-            for tupla in terms:
-                term=tupla[0]
-                field=tupla[1]
-
-                #se calcula el pesado
-                tf=0
-                ft=self.weight[field][term].get(doc,0)
-
-                if ft>0:
-                    tf=1+math.log10(ft)
-
-                #calculamos la funcion global idf
-                df=len(self.weigth[field][term])
-                idf=math.log10(self.N/df)
-
-                #calculamos el peso del documento
-                peso_doc = peso_doc + tf*idf
-
-            #añadimos los pesados
-            self.weight_doc[doc]=self.weight_doc[doc].get(doc,0)+peso_doc
-            pesado.append(peso_doc)
-
-        #ordenamos los pesados
-        res=[x for _, x in sorted(zip(pesado,result), reverse=True)]
-
-        return res
->>>>>>> Stashed changes
 
 def set_spelling(self, use_spelling, distance, threshold):
     """
