@@ -1,6 +1,6 @@
 import json
 from nltk.stem.snowball import SnowballStemmer
-from spellsuggester.py import SpellSuggester
+from spellsuggester import SpellSuggester
 import os
 import re
 import math
