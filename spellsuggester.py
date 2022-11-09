@@ -75,14 +75,36 @@ class SpellSuggester:
         resul=[]
         newresul=[]
         for palabra in self.vocabulary:
-            if distancias.levenshtein_matriz(term,palabra,threshold)==threshold:
-                newresul.append(palabra)
+            if distance=="levenshtein_m":
+                if distancias.levenshtein_matriz(term,palabra,threshold)==threshold:
+                    newresul.append(palabra)
+            if distance=="levenshtein_r":
+                if distancias.levenshtein_reduccion(term,palabra,threshold)==threshold:
+                    newresul.append(palabra)
+            if distance=="levenshtein":
+                if distancias.levenshtein(term,palabra,threshold)==threshold:
+                    newresul.append(palabra)
+            if distance=="levenshtein_o":
+                if distancias.levenshtein_cota_optimista(term,palabra,threshold)==threshold:
+                    newresul.append(palabra)
+            if distance=="damerau_rm":
+                if distancias.damerau_restricted_matriz(term,palabra,threshold)==threshold:
+                    newresul.append(palabra)
+            if distance=="damerau_r":
+                if distancias.damerau_restricted(term,palabra,threshold)==threshold:
+                    newresul.append(palabra)
+            if distance=="damerau_im":
+                if distancias.damerau_intermediate_matriz(term,palabra,threshold)==threshold:
+                    newresul.append(palabra)
+            if distance=="damerau_i":
+                if distancias.damerau_intermediate(term,palabra,threshold)==threshold:
+                    newresul.append(palabra)
         resul.append(newresul)
         ########################################
         # COMPLETAR
         ########################################
-        '''if flatten:
-            resul = [word for wlist in resul for word in wlist]'''
+        if flatten:
+            resul = [word for wlist in resul for word in wlist]
             
         return resul
 
