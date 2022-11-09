@@ -58,7 +58,7 @@ class SAR_Project:
         self.use_spelling = False
         self.distance = None
         self.threshold = None
-        self.speller = new SpellSuggester()
+        self.speller = spellsuggester.SpellSuggester(self.use_spelling, None, self.distance, self.threshold)
 
 
     ###############################
@@ -292,7 +292,7 @@ class SAR_Project:
         ####################################################
         ## COMPLETAR PARA FUNCIONALIDAD EXTRA DE STEMMING ##
         ####################################################
-     # Recorremos todos los campos del índice de términos
+        # Recorremos todos los campos del índice de términos
         for term in self.index.keys():
             aux = term + "$"
             i=0
@@ -518,33 +518,52 @@ class SAR_Project:
 
         termAux = term
 
-        #Se añade el término y campo de la consulta para el ranking
-        self.term_field[(termAux, field)] = True
+        if(termAux not in self.index):
+            spellList = self.speller.suggest(termAux, self.distance, self.threshold, True)
+            if(len(spellList) != 0):
+                resT = []
+                for i in spellList:
+                    res = []
+                    self.term_field[(i, field)] = True
+                    #Comprobamos si se debe realizar permuterms
+                    if ("*" in i or "?" in i):
+                        res = self.get_permuterm(i,field)
 
-        res = []
+                    if i[0] == '"' and i[-1] == '"':
+                        var = i.replace('"',"")
+                        res = self.get_positionals(var.split("|"))
+                    #Comprobamos si se debe realizar stemming
+                    elif (self.use_stemming):
+                        res = self.get_stemming(term, field)
 
-        #Comprobamos si se debe realizar permuterms
-        if ("*" in termAux or "?" in termAux):
-            res = self.get_permuterm(termAux,field)
+                    #Caso estándar
+                    elif (i in self.index):
+                        for t in self.index[i]:
+                            res = self.index[i]
+                    self.or_posting(resT, res)
+                return resT
+        else:
+            #Se añade el término y campo de la consulta para el ranking
+            self.term_field[(termAux, field)] = True
 
-        if termAux[0] == '"' and termAux[-1] == '"':
-            var = termAux.replace('"',"")
-            res = self.get_positionals(var.split("|"))
-        #Comprobamos si se debe realizar stemming
-        elif (self.use_stemming):
-            res = self.get_stemming(term, field)
+            res = []
 
-        #Caso estándar
-        elif (termAux in self.index):
-            for t in self.index[termAux]:
-                res = self.index[termAux]
-        return res
+            #Comprobamos si se debe realizar permuterms
+            if ("*" in termAux or "?" in termAux):
+                res = self.get_permuterm(termAux,field)
 
-        ########################################
-        ## COMPLETAR PARA TODAS LAS VERSIONES ##
-        ########################################
+            if termAux[0] == '"' and termAux[-1] == '"':
+                var = termAux.replace('"',"")
+                res = self.get_positionals(var.split("|"))
+            #Comprobamos si se debe realizar stemming
+            elif (self.use_stemming):
+                res = self.get_stemming(term, field)
 
-
+            #Caso estándar
+            elif (termAux in self.index):
+                for t in self.index[termAux]:
+                    res = self.index[termAux]
+            return res
 
     def get_positionals(self, terms, field='article'):
         """
