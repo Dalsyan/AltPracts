@@ -25,7 +25,7 @@ def get_damerau_intermediate_matriz(x, y, threshold=None):
     lenX, lenY = len(x), len(y)
     ruleNum = 0
     rule2Num = 0
-    rule3Num = 0  
+    rule3Num = 0
     D = np.zeros((lenX + 1, lenY + 1), dtype=np.int)
     for i in range(1, lenX + 1):
         D[i][0] = D[i - 1][0] + 1
@@ -40,13 +40,13 @@ def get_damerau_intermediate_matriz(x, y, threshold=None):
             if(i > 2 and j > 1 and (x[i - 3] == y[j - 1]) and (x[i - 1] == y[j - 2])):
                 rule2Num = D[i - 3][j - 2] + 2
             else:
-                rule2Num =  D[i - 1][j] + 10 #it never is the minimum 
-            
+                rule2Num =  D[i - 1][j] + 10 #it never is the minimum
+
             if(i > 1 and j > 2 and (x[i - 1] == y[j - 3]) and (x[i - 2] == y[j - 1])):
                 rule3Num = D[i - 2][j - 3] + 2
             else:
                 rule3Num =  D[i - 1][j] + 10 #it never is the minimum
-                 
+
             D[i][j] = min(
                 D[i - 1][j] + 1,
                 D[i][j - 1] + 1,
@@ -55,7 +55,7 @@ def get_damerau_intermediate_matriz(x, y, threshold=None):
                 rule2Num,
                 rule3Num,
             )
-    #print(D)       
+    #print(D)
     return D
 
 def get_damerau_restricted_matriz(x, y, threshold=None):
@@ -71,14 +71,14 @@ def get_damerau_restricted_matriz(x, y, threshold=None):
             if(i > 1 and j > 1 and (x[i - 2] == y[j - 1]) and (x[i - 1] == y[j - 2])):
                 ruleNum = D[i - 2][j - 2] + 1
             else:
-                ruleNum = D[i - 1][j] + 10 #it never is the minimum     
+                ruleNum = D[i - 1][j] + 10 #it never is the minimum
             D[i][j] = min(
                 D[i - 1][j] + 1,
                 D[i][j - 1] + 1,
                 D[i - 1][j - 1] + (x[i - 1] != y[j - 1]),
                 ruleNum,
             )
-           
+
     return D
 
 def getMatrixLevenstein(x, y, threshold=None):
@@ -110,7 +110,7 @@ def levenshtein_edicion(x, y, threshold=None):
     iterations = 0
     #print("Curr = " + str(curr[0]) + " , " + str(curr[1]))
     while(curr[0] != 0 or curr[1] != 0):
-        
+
         if(curr[0] == 0):
             nex = [curr[0],curr[1] - 1]
             camino.append(('',y[curr[1]-1]))
@@ -137,7 +137,7 @@ def levenshtein_edicion(x, y, threshold=None):
         iterations = iterations+1
         #print(camino)
         #dar la vuelta a la lista
-    camino.reverse()    
+    camino.reverse()
     return dist,camino
 #print(levenshtein_edicion("zapato","patos",None))
 
@@ -156,12 +156,12 @@ def levenshtein_reduccion(x, y, threshold=None):
                 vCurr[i - 1] + 1,
                 vPrev[i - 1] + (x[i - 1] != y[j - 1]),
             )
-        #print("PREVIOUS")    
+        #print("PREVIOUS")
         #print(vPrev)
-        #print("CURRENT")   
+        #print("CURRENT")
         #print(vCurr)
-        vPrev,vCurr = vCurr,vPrev    
-      
+        vPrev,vCurr = vCurr,vPrev
+
     return vPrev[lenX] # COMPLETAR Y REEMPLAZAR ESTA PARTE
 #print(levenshtein_reduccion("ejemplo","campos",None))
 
@@ -169,7 +169,7 @@ def levenshtein(x, y, threshold):
     lenX, lenY = len(x), len(y)
     vPrev = np.zeros(lenX + 1,dtype=np.int)
     vCurr = np.zeros(lenX + 1,dtype=np.int)
-    
+
     for i in range(1, lenX + 1):
         vPrev[i] = vPrev[i - 1] + 1
     #print(vPrev)
@@ -178,7 +178,7 @@ def levenshtein(x, y, threshold):
         allAbove = True
         if(vCurr[0] <= threshold): allAbove = False
         elif(vCurr[0] == threshold and lenX - i == lenY - j): allAbove = False
-        for i in range(1, lenX + 1):           
+        for i in range(1, lenX + 1):
             vCurr[i] = min(
                 vPrev[i] + 1,
                 vCurr[i - 1] + 1,
@@ -187,12 +187,12 @@ def levenshtein(x, y, threshold):
             if(vCurr[i] < threshold): allAbove = False
             elif(vCurr[i] == threshold and lenX - i == lenY - j): allAbove = False
         #print(vCurr)
-        if(allAbove): return threshold+1    
-        #print("PREVIOUS")    
+        if(allAbove): return threshold+1
+        #print("PREVIOUS")
         #print(vPrev)
-        #print("CURRENT")   
-        
-        vPrev,vCurr = vCurr,vPrev  
+        #print("CURRENT")
+
+        vPrev,vCurr = vCurr,vPrev
     return vPrev[lenX] # COMPLETAR Y REEMPLAZAR ESTA PARTE
 #print(levenshtein("ejemplo","campos",6))
 
@@ -213,14 +213,14 @@ def damerau_restricted_matriz(x, y, threshold=None):
             if(i > 1 and j > 1 and (x[i - 2] == y[j - 1]) and (x[i - 1] == y[j - 2])):
                 ruleNum = D[i - 2][j - 2] + 1
             else:
-                ruleNum = D[i - 1][j] + 10 #it never is the minimum     
+                ruleNum = D[i - 1][j] + 10 #it never is the minimum
             D[i][j] = min(
                 D[i - 1][j] + 1,
                 D[i][j - 1] + 1,
                 D[i - 1][j - 1] + (x[i - 1] != y[j - 1]),
                 ruleNum,
             )
-    #print(D)       
+    #print(D)
     return D[lenX, lenY]
 #print(damerau_restricted_matriz("algortimac","algoritmica",50))
 
@@ -237,7 +237,7 @@ def damerau_restricted_edicion(x, y, threshold=None):
     valCurr = 0
     #print("Curr = " + str(curr[0]) + " , " + str(curr[1]))
     while(curr[0] != 0 or curr[1] != 0):
-        
+
         if(curr[0] == 0):
             nex = [curr[0],curr[1] - 1]
             camino.append(('',y[curr[1]-1]))
@@ -268,7 +268,7 @@ def damerau_restricted_edicion(x, y, threshold=None):
         iterations = iterations+1
         #print(camino)
         #dar la vuelta a la lista
-    camino.reverse()    
+    camino.reverse()
     return dist,camino # COMPLETAR Y REEMPLAZAR ESTA PARTE
 
 def damerau_restricted(x, y, threshold=None):
@@ -277,7 +277,7 @@ def damerau_restricted(x, y, threshold=None):
     vPrev = np.zeros(lenX + 1,dtype=np.int)
     vCurr = np.zeros(lenX + 1,dtype=np.int)
     vPrev2 = np.zeros(lenX + 1,dtype=np.int)
-    ruleNum = 0;    
+    ruleNum = 0;
     for i in range(1, lenX + 1):
         vPrev[i] = vPrev[i - 1] + 1
     #print(vPrev)
@@ -290,7 +290,7 @@ def damerau_restricted(x, y, threshold=None):
             if(i > 1 and j > 1 and (x[i - 2] == y[j - 1]) and (x[i - 1] == y[j - 2])):
                 ruleNum = vPrev2[i - 2] + 1
             else:
-                ruleNum =  vPrev[i] + 10 #it never is the minimum      
+                ruleNum =  vPrev[i] + 10 #it never is the minimum
             vCurr[i] = min(
                 vPrev[i] + 1,
                 vCurr[i - 1] + 1,
@@ -300,12 +300,12 @@ def damerau_restricted(x, y, threshold=None):
             if(vCurr[i] < threshold): allAbove = False
             elif(vCurr[i] == threshold and lenX - i == lenY - j): allAbove = False
         #print(vCurr)
-        if(allAbove): return threshold+1    
-        #print("PREVIOUS")    
+        if(allAbove): return threshold+1
+        #print("PREVIOUS")
         #print(vPrev)
-        #print("CURRENT")   
-        
-        vPrev,vPrev2,vCurr = vCurr,vPrev,vPrev2  
+        #print("CURRENT")
+
+        vPrev,vPrev2,vCurr = vCurr,vPrev,vPrev2
     return vPrev[lenX] # COMPLETAR Y REEMPLAZAR ESTA PARTE
 
 def damerau_intermediate_matriz(x, y, threshold=None):
@@ -313,7 +313,7 @@ def damerau_intermediate_matriz(x, y, threshold=None):
     lenX, lenY = len(x), len(y)
     ruleNum = 0
     rule2Num = 0
-    rule3Num = 0  
+    rule3Num = 0
     D = np.zeros((lenX + 1, lenY + 1), dtype=np.int)
     for i in range(1, lenX + 1):
         D[i][0] = D[i - 1][0] + 1
@@ -328,13 +328,13 @@ def damerau_intermediate_matriz(x, y, threshold=None):
             if(i > 2 and j > 1 and (x[i - 3] == y[j - 1]) and (x[i - 1] == y[j - 2])):
                 rule2Num = D[i - 3][j - 2] + 2
             else:
-                rule2Num =  D[i - 1][j] + 10 #it never is the minimum 
-            
+                rule2Num =  D[i - 1][j] + 10 #it never is the minimum
+
             if(i > 1 and j > 2 and (x[i - 1] == y[j - 3]) and (x[i - 2] == y[j - 1])):
                 rule3Num = D[i - 2][j - 3] + 2
             else:
                 rule3Num =  D[i - 1][j] + 10 #it never is the minimum
-                 
+
             D[i][j] = min(
                 D[i - 1][j] + 1,
                 D[i][j - 1] + 1,
@@ -343,11 +343,11 @@ def damerau_intermediate_matriz(x, y, threshold=None):
                 rule2Num,
                 rule3Num,
             )
-    #print(D)       
+    #print(D)
     return D[lenX, lenY]
 
 def damerau_intermediate_edicion(x, y, threshold=None):
-    D = get_damerau_restricted_matriz(x, y, None)
+    D = get_damerau_intermediate_matriz(x, y, None)
     dist = 0
     lenX = len(x)
     lenY = len(y)
@@ -358,7 +358,7 @@ def damerau_intermediate_edicion(x, y, threshold=None):
     valCurr = 0
     #print("Curr = " + str(curr[0]) + " , " + str(curr[1]))
     while(curr[0] != 0 or curr[1] != 0):
-        
+
         if(curr[0] == 0):
             nex = [curr[0],curr[1] - 1]
             camino.append(('',y[curr[1]-1]))
@@ -397,7 +397,7 @@ def damerau_intermediate_edicion(x, y, threshold=None):
         iterations = iterations+1
         #print(camino)
         #dar la vuelta a la lista
-    camino.reverse()    
+    camino.reverse()
     return dist,camino # COMPLETAR Y REEMPLAZAR ESTA PARTE
 
 def damerau_intermediate(x, y, threshold=None):
@@ -409,7 +409,7 @@ def damerau_intermediate(x, y, threshold=None):
     vPrev3 = np.zeros(lenX + 1,dtype=np.int)
     ruleNum = 0
     rule2Num = 0
-    rule3Num = 0      
+    rule3Num = 0
     for i in range(1, lenX + 1):
         vPrev[i] = vPrev[i - 1] + 1
     #print(vPrev)
@@ -422,17 +422,17 @@ def damerau_intermediate(x, y, threshold=None):
             if(i > 1 and j > 1 and (x[i - 2] == y[j - 1]) and (x[i - 1] == y[j - 2])):
                 ruleNum = vPrev2[i - 2] + 1
             else:
-                ruleNum =  vPrev[i] + 10 #it never is the minimum     
+                ruleNum =  vPrev[i] + 10 #it never is the minimum
 
             if(i > 2 and j > 1 and (x[i - 3] == y[j - 1]) and (x[i - 1] == y[j - 2])):
                 rule2Num = vPrev2[i - 3] + 2
             else:
-                rule2Num =  vPrev[i] + 10 #it never is the minimum 
-            
+                rule2Num =  vPrev[i] + 10 #it never is the minimum
+
             if(i > 1 and j > 2 and (x[i - 1] == y[j - 3]) and (x[i - 2] == y[j - 1])):
                 rule3Num = vPrev3[i - 2] + 2
             else:
-                rule3Num =  vPrev[i] + 10 #it never is the minimum 
+                rule3Num =  vPrev[i] + 10 #it never is the minimum
 
             vCurr[i] = min(
                 vPrev[i] + 1,
@@ -445,12 +445,12 @@ def damerau_intermediate(x, y, threshold=None):
             if(vCurr[i] < threshold): allAbove = False
             elif(vCurr[i] == threshold and lenX - i == lenY - j): allAbove = False
         #print(vCurr)
-        if(allAbove): return threshold+1    
-        #print("PREVIOUS")    
+        if(allAbove): return threshold+1
+        #print("PREVIOUS")
         #print(vPrev)
-        #print("CURRENT")   
-        
-        vPrev,vPrev2,vPrev3,vCurr = vCurr,vPrev,vPrev2,vPrev3 
+        #print("CURRENT")
+
+        vPrev,vPrev2,vPrev3,vCurr = vCurr,vPrev,vPrev2,vPrev3
     return vPrev[lenX] # COMPLETAR Y REEMPLAZAR ESTA PARTE
 #print(damerau_intermediate("algoritmo","algortximo",50))
 

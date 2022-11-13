@@ -1023,15 +1023,15 @@ class SAR_Project:
 
         pass
 
-    def set_spelling(self, use_spelling, distance, threshold):
-        """
-        self.use_spelling a True se activa la corrección ortográfica
-        EN LAS PALABRAS NO ENCONTRADAS, en caso contrario NO utilizará
-        corrección ortográfica
-        """
-        self.use_spelling = use_spelling
-        self.distance = distance
-        self.threshold = threshold
-            ###################################################
-            ## COMPLETAR PARA FUNCIONALIDAD EXTRA DE RANKING ##
-            ###################################################
+        def set_spelling(self, use_spelling, distance, threshold):
+            """
+            self.use_spelling a True se activa la corrección ortográfica
+            EN LAS PALABRAS NO ENCONTRADAS, en caso contrario NO utilizará
+            corrección ortográfica
+            """
+            self.use_spelling = use_spelling
+            self.distance = distance
+            self.threshold = threshold
+                ###################################################
+                ## COMPLETAR PARA FUNCIONALIDAD EXTRA DE RANKING ##
+                ###################################################
