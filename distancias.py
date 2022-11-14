@@ -176,7 +176,7 @@ def levenshtein(x, y, threshold):
     for j in range(1, lenY + 1):
         vCurr[0] = vPrev[0] + 1
         allAbove = True
-        if(vCurr[0] <= threshold): allAbove = False
+        if(vCurr[0] < threshold): allAbove = False
         elif(vCurr[0] == threshold and lenX - i == lenY - j): allAbove = False
         for i in range(1, lenX + 1):
             vCurr[i] = min(
@@ -284,7 +284,7 @@ def damerau_restricted(x, y, threshold=None):
     for j in range(1, lenY + 1):
         vCurr[0] = vPrev[0] + 1
         allAbove = True
-        if(vCurr[0] <= threshold): allAbove = False
+        if(vCurr[0] < threshold): allAbove = False
         elif(vCurr[0] == threshold and lenX - i == lenY - j): allAbove = False
         for i in range(1, lenX + 1):
             if(i > 1 and j > 1 and (x[i - 2] == y[j - 1]) and (x[i - 1] == y[j - 2])):
@@ -416,7 +416,7 @@ def damerau_intermediate(x, y, threshold=None):
     for j in range(1, lenY + 1):
         vCurr[0] = vPrev[0] + 1
         allAbove = True
-        if(vCurr[0] <= threshold): allAbove = False
+        if(vCurr[0] < threshold): allAbove = False
         elif(vCurr[0] == threshold and lenX - i == lenY - j): allAbove = False
         for i in range(1, lenX + 1):
             if(i > 1 and j > 1 and (x[i - 2] == y[j - 1]) and (x[i - 1] == y[j - 2])):
